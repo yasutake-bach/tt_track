@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}乗車記録一覧 | Train Trip Track{% endblock %}
+
+{% block active_boarding_record %}active{% endblock %}
+
+{% block head %}
+<link href="{% static 'css/clean-blog.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block contents %}
+<div class="container px-4 px-lg-5 my-div-style">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="d-flex justify-content-end mb-4">
+                <a class="btn btn-primary float-right" href="{% url 'track:boarding_record_create' %}">新規作成</a>
+            </div>
+            {% block for track in boarding\record %}
+            <div class="post-preview">
+                <a href="#">
+                    <h3 class="post-meta">
+                        {{ boarding_record.recording_start_date }}
+                    </h3>
+                    <h2 class="title">
+                        {{ boarding_record.title }}
+                    </h2>
+                </a>
+            </div>
+            <hr class="my-4">
+            {% empty %}
+            <p>乗車記録がありません。</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
