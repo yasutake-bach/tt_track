@@ -2,7 +2,9 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Boarding_record
 from django.urls import reverse_lazy
-from .forms import Boarding_recordForm
+from .forms import Boarding_recordForm, PhotoFormset, PlottingFormset
+from django.shortcuts import render
+
 
 # Create your views here.
 class IndexView(generic.TemplateView):
@@ -16,26 +18,32 @@ class Boarding_recordListView(LoginRequiredMixin, generic.ListView):
         records = Boarding_record.objects.filter(user=self.request.user).order_by('-recording_start_date')
         return records
 
-class Boarding_recordCreateView(generic.FormView):
-    template_name = 'boarding_record_create.html'
-    form_class = Boarding_recordForm
-    success_url = reverse_lazy('track:boarding-record')
+def add_boarding_record(request):
+    form = Boarding_recordForm(request.POST or None)
+    context = {'form': form}
 
-    def form_valid(self, form):
-            recording_start_date = forms.cleaned_data['recording_start_date']
-            recording_end_date = forms.cleaned_data['recording_end_date']
-            distance = forms.cleaned_data['distance']
-            duration = forms.cleaned_data['duration']
-            title = forms.cleaned_data['title']
-            height = forms.cleaned_data['height']
-            comment = forms.cleaned_data['comment']
-            Boarding_record.objects.create(
-                recording_start_date=recording_start_date,
-                recording_end_date=recording_end_date,
-                distance=distance,
-                duration=duration,
-                title=title,
-                height=height,
-                comment=comment,
-            )
-            return super().form_valid(form)
+    if request.method == 'POST' and form.is_valid():
+        boarding_record = form.save(commit=False)
+        boarding_record.user = self.request.user
+        plotting_formset = PlottingFormset(request.POST, files=request.FILES, instance=boarding_record)
+        photo_formset = PhotoFormset(request.POST, files=request.FILES, instance=boarding_record)
+
+        if plotting_formset.is_valid() and photo_formset.is_valid(): 
+            boarding_record.save()
+            plotting_formset.save()
+            photo_formset.save() 
+            return redirect('track:boarding-record')
+
+        # エラーメッセージつきのformsetをテンプレートへ渡すため、contextに格納
+        else:
+            context['plotting_formset'] = plotting_formset
+            context['photo_formset'] = photo_formset 
+
+    # GETのとき
+    else:
+        # 空のformsetをテンプレートへ渡す
+        context['plotting_formset'] = PlottingFormset()
+        context['photo_formset'] = PhotoFormset()
+
+    return render(request, 'boarding_record_create.html', context)        
+

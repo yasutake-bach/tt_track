@@ -20,6 +20,20 @@
                 {{ field.errors }}
             </div>
             {% endfor %}
+            <div class="mb-3">
+                {{ photo_formset.management_form }}
+                <label for="formFileMultiple" class="form-label">写真</label>
+                <input class="form-control" type="file" id="formFileMultiple" multiple>
+            </div>
+            <div class="row">
+                {{ plotting_formset.management_form }}
+                {% for plotting_form in plotting_formset %}
+                    <div class="col-sm-4">
+                        {{ plotting_form.as_p }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button id="add" type="button" class="btn btn-secondary">座標の追加</button>
             <button class="btn btn-primary" type="submit">保存</button>
         </form>
     </div>
