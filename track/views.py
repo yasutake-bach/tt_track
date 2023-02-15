@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Boarding_record
 from django.urls import reverse_lazy
 from .forms import Boarding_recordForm, PhotoFormset, PlottingFormset
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -24,7 +24,7 @@ def add_boarding_record(request):
 
     if request.method == 'POST' and form.is_valid():
         boarding_record = form.save(commit=False)
-        boarding_record.user = self.request.user
+        boarding_record.user = request.user
         plotting_formset = PlottingFormset(request.POST, files=request.FILES, instance=boarding_record)
         photo_formset = PhotoFormset(request.POST, files=request.FILES, instance=boarding_record)
 
@@ -32,7 +32,7 @@ def add_boarding_record(request):
             boarding_record.save()
             plotting_formset.save()
             photo_formset.save() 
-            return redirect('track:boarding-record')
+            return redirect('track:boarding_record')
 
         # エラーメッセージつきのformsetをテンプレートへ渡すため、contextに格納
         else:
