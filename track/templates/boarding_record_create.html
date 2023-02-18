@@ -25,17 +25,79 @@
                 <label for="formFileMultiple" class="form-label">写真</label>
                 <input class="form-control" type="file" id="formFileMultiple" multiple>
             </div>
-            <div class="row">
-                {{ plotting_formset.management_form }}
-                {% for plotting_form in plotting_formset %}
-                    <div class="col-sm-4">
-                        {{ plotting_form.as_p }}
-                    </div>
-                {% endfor %}
+            
+          
+            <div class="row" ></div>
+            {{ plotting_formset.management_form }}
+            {% for plotting_form in plotting_formset %}
+                <div id="plotting-area" class="col-sm-4">
+                    {{ plotting_form.as_p }}
+                </div>
             </div>
+            {% endfor %}
             <button id="add" type="button" class="btn btn-secondary">座標の追加</button>
             <button class="btn btn-primary" type="submit">保存</button>
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(function(){
+    var totalCoordinateElement = $('input#id_plotting_set-TOTAL_FORMS');
+    var currentCoordinateCount = parseInt(totalCoordinateElement.val());
+    $('button#add').on('click', function(){
+        const newLatitudeForm = document.createElement('p');
+        let newLatitudeLabel = $('<label>', {
+            for: 'id_plotting_set-' + currentCoordinateCount + '-latitude',
+            text: 'Latitude:'
+        });
+        var latitudeElement = $('<input>', {
+            type: 'number',
+            name: 'plotting_set-' + currentCoordinateCount + '-latitude',
+            id: 'id_plotting_set-' + currentCoordinateCount + '-latitude',
+        });
+        $('div#plotting-area').append(newLatitudeForm);
+        $('div#plotting-area p:last-child').append(newLatitudeLabel, latitudeElement);
+        const newLongitudeForm = document.createElement('p');
+        let newLongitudeLabel = $('<label>', {
+            for: 'id_plotting_set-' + currentCoordinateCount + '-longitude',
+            text: 'Longitude:'
+        });
+        var longitudeElement = $('<input>', {
+            type: 'number',
+            name: 'plotting_set-' + currentCoordinateCount + '-longitude',
+            id: 'id_plotting_set-' + currentCoordinateCount +'-longitude',
+        });
+        $('div#plotting-area').append(newLongitudeForm);
+        $('div#plotting-area p:last-child').append(newLongitudeLabel, longitudeElement);
+        const newDeleteCheck = document.createElement('p');
+        let newDeleteLabel = $('<label>', {
+            for: 'id_plotting_set-' + currentCoordinateCount + '-DELETE',
+            text: '削除:'
+        });
+        let deleteElement_box = $('<input>', {
+            type: 'checkbox',
+            name: 'plotting_set-' + currentCoordinateCount + '-DELETE',
+            id: 'id_plotting_set-' + currentCoordinateCount +'-DELETE',
+        });
+        let deleteElement_b_r = $('<input>', {
+            type: 'hidden',
+            name: 'plotting_set-' + currentCoordinateCount + '-boarding_record',
+            id: 'id_plotting_set-' + currentCoordinateCount +'-boarding_record',
+        });
+        let deleteElement_id = $('<input>', {
+            type: 'hidden',
+            name: 'plotting_set-' + currentCoordinateCount + '-id',
+            id: 'id_plotting_set-' + currentCoordinateCount +'-id',
+        });
+        $('div#plotting-area').append(newDeleteCheck);
+        $('div#plotting-area p:last-child').append(newDeleteLabel, deleteElement_box, deleteElement_b_r, deleteElement_id);
+        currentCoordinateCount += 1;
+        totalCoordinateElement.attr('value', currentCoordinateCount);
+        
+    });
+});
+</script>
 {% endblock %}
