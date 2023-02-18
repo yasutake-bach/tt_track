@@ -13,6 +13,6 @@ class Boarding_recordForm(forms.ModelForm):
         model = Boarding_record
         exclude = ('user',)
 
-PhotoFormset = forms.inlineformset_factory(Boarding_record, Photo, fields='__all__', max_num=30)
+PhotoFormset = forms.inlineformset_factory(Boarding_record, Photo, fields='__all__', max_num=30, extra=1, can_delete=False)
 
 PlottingFormset = forms.inlineformset_factory(Boarding_record, Plotting, fields='__all__', extra=1)

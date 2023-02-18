@@ -6,7 +6,7 @@
 {% block contents %}
 <div class="container">
     <div class="my-div-style">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ form.non_field_errors }}
@@ -21,9 +21,22 @@
             </div>
             {% endfor %}
             <div class="mb-3">
-                {{ photo_formset.management_form }}
                 <label for="formFileMultiple" class="form-label">写真</label>
-                <input class="form-control" type="file" id="formFileMultiple" multiple>
+                {{ photo_formset.management_form }}
+                <div id="photo-formset">
+                    {% for photo in photo_formset %}
+                        {{ photo.as_p }}
+                    {% endfor %}
+                </div>
+
+                <p id="photo_set-empty" class="d-none">
+                    <label for="id_photo_set-__prefix__-photo">Photo:</label>
+                    <input type="file" name="photo_set-__prefix__-photo" accept="image/*" id="id_photo_set-__prefix__-photo">
+                    <input type="hidden" name="photo_set-__prefix__-boarding_record" id="id_photo_set-__prefix__-boarding_record">
+                    <input type="hidden" name="photo_set-__prefix__-id" id="id_photo_set-__prefix__-id">
+                </p>
+                
+                <button id="add-photo" type="button" class="btn btn-secondary">写真の追加</button>
             </div>
             <div class="row">
                 {{ plotting_formset.management_form }}
@@ -38,4 +51,44 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const addPhotoButton = document.getElementById('add-photo');
+    const emptyForm = document.getElementById('photo_set-empty');
+    const photoFormset = document.getElementById('photo-formset');
+    const photoMax = parseInt(document.getElementById('id_photo_set-MAX_NUM_FORMS').value);
+
+    addPhotoButton.addEventListener('click', () => {
+        const form = emptyForm.cloneNode(true);
+        const formSetCount = document.getElementById('id_photo_set-TOTAL_FORMS');
+        const count = parseInt(formSetCount.value);
+
+        form.removeAttribute('id');
+        form.removeAttribute('class');
+        const label = form.querySelector('label');
+        label.setAttribute('for', label.getAttribute('for').replace('__prefix__', count));
+
+        const input1 = form.querySelector('#id_photo_set-__prefix__-photo');
+        input1.setAttribute('id', input1.getAttribute('id').replace('__prefix__', count));
+        input1.setAttribute('name', input1.getAttribute('name').replace('__prefix__', count));
+
+        const input2 = form.querySelector('#id_photo_set-__prefix__-boarding_record');
+        input2.setAttribute('id', input2.getAttribute('id').replace('__prefix__', count));
+        input2.setAttribute('name', input2.getAttribute('name').replace('__prefix__', count));
+
+        const input3 = form.querySelector('#id_photo_set-__prefix__-id');
+        input3.setAttribute('id', input3.getAttribute('id').replace('__prefix__', count));
+        input3.setAttribute('name', input3.getAttribute('name').replace('__prefix__', count));
+        
+        photoFormset.appendChild(form);
+
+        formSetCount.value = count + 1;
+
+        if(formSetCount.value >= photoMax) {
+            addPhotoButton.remove();
+        }
+    });
+</script>
 {% endblock %}

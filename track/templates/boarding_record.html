@@ -16,7 +16,7 @@
             <div class="d-flex justify-content-end mb-4">
                 <a class="btn btn-primary float-right" href="{% url 'track:boarding_record_create' %}">新規作成</a>
             </div>
-            {% for track in boarding_record %}
+            {% for boarding_record in object_list %}
             <div class="post-preview">
                 <a href="#">
                     <h3 class="post-meta">
