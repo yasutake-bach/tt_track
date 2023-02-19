@@ -30,7 +30,13 @@ def add_boarding_record(request):
 
         if plotting_formset.is_valid() and photo_formset.is_valid(): 
             boarding_record.save()
-            plotting_formset.save()
+            instances = plotting_formset.save(commit=False)
+            for files in plotting_formset.deleted_objects:
+                plotting_formset.delete()
+
+            for files in instances:
+                plotting_formset.save()
+                
             photo_formset.save() 
             return redirect('track:boarding_record')
 

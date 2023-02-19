@@ -16,14 +16,14 @@
             <div class="d-flex justify-content-end mb-4">
                 <a class="btn btn-primary float-right" href="{% url 'track:boarding_record_create' %}">新規作成</a>
             </div>
-            {% for track in boarding_record %}
+            {% for item in object_list %}
             <div class="post-preview">
                 <a href="#">
                     <h3 class="post-meta">
-                        {{ boarding_record.recording_start_date }}
+                        {{ item.recording_start_date }}
                     </h3>
                     <h2 class="title">
-                        {{ boarding_record.title }}
+                        {{ item.title }}
                     </h2>
                 </a>
             </div>
