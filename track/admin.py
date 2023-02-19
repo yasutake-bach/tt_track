@@ -18,6 +18,13 @@ class PlottingInline(admin.StackedInline):
 
 class BoardingRecordCreateAdmin(admin.ModelAdmin):
     inlines = [PhotoInline, PlottingInline]
+    list_display  = ["title", "created_at"]
+
+
 
 admin.site.register(Boarding_record, BoardingRecordCreateAdmin)
+
+class Boarding_recordAdmin(admin.ModelAdmin):
+    model = Boarding_record
+    list_display  = ["title", "created_at"]
 
