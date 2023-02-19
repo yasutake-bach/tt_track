@@ -20,21 +20,58 @@
 </header>
 {% endblock %}
 
-{% block contents %}
-<section>
-    <div class="container px-5">
-        <div class="row gx-5 align-items-center">
-            <div class="col-lg-6 order-lg-2">
-                <div class="p-5"><img class="img-fluid rounded-circle" src="assets/img/01.jpg" alt="..." /></div>
-            </div>
-            <div class="col-lg-6 order-lg-1">
-                <div class="p-5">
-                    <h2 class="display-4">Record your boarding online</h2>
-                    <p>Web上で作成/編集/削除ができる乗車記録</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+{% block style %}
+<!-- leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 
+<!-- Leaflet.Locate -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+<style>
+  #map {
+    height: 700px;
+  }
+</style>
+{% endblock %}
+
+{% block contents %}
+
+<div class="container mt-3">
+
+    <div id="map"></div>
+  
+    
+</div>
+
+{% endblock %}
+
+{% block script %}
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<!-- Leaflet.Locate -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"
+  charset="utf-8"></script>
+<script>
+  var map = L.map('map').setView([36, 137.59], 5);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  L.control.locate().addTo(map);
+  const urls = [
+    '{% static "geojson/全国の駅_2.geojson" %}',
+  ];
+  urls.forEach((url) => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        L.geoJson(data, {
+          onEachFeature: (feature, layer) => {
+            layer.bindPopup(feature.properties.station_name);
+          }
+        }).addTo(map);
+      });
+  });
+</script>
 {% endblock %}
