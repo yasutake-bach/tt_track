@@ -35,11 +35,13 @@ INSTALLED_APPS = [
 
     'track.apps.TrackConfig',
     'accounts.apps.AccountsConfig',
+    'station_data.apps.StationDataConfig',
 
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'django_bootstrap5',
+    'import_export',
 ]
 
 MIDDLEWARE = [
