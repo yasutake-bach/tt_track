@@ -34,7 +34,7 @@ class Company(models.Model):
 class Line(models.Model):
     line_cd = models.IntegerField()
     #路線コード	
-    company_cd = models.IntegerField()
+    company_cd = models.ForeignKey(Company, on_delete=models.CASCADE)
     #事業者コード	
     line_name = models.CharField(max_length=80)
     #路線名称(一般)	

@@ -51,5 +51,9 @@ def add_boarding_record(request):
         context['plotting_formset'] = PlottingFormset()
         context['photo_formset'] = PhotoFormset()
 
-    return render(request, 'boarding_record_create.html', context)        
+    return render(request, 'boarding_record_create.html', context)    
+
+
+#def start_pref_station(request):
+
 

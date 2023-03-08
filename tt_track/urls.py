@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('track.urls')),
+    path('stations/', include('station_data.urls')),
+
 ]
 
 #開発サーバーでメディアを配信できるようにする設定

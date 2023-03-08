@@ -17,17 +17,33 @@ class StationResource(resources.ModelResource):
                 attribute='line_cd',
                 widget=ForeignKeyWidget(Line, field='line_cd')
         )
+        add = fields.Field(
+                attribute='add',
+                column_name='address',
+        )
 
+        def before_import_row(self, row, row_number=None, **kwargs):
+                if  row['open_ymd'] == '0000-00-00':
+                    row['open_ymd'] = None
+
+                if  row['close_ymd'] == '0000-00-00':
+                    row['close_ymd'] = None
+
+        
         class Meta:
                 model = Station
                 import_id_fields = ('station_cd',)
-                exclude = ('open_ymd', 'close_ymd', 'add', 'post' )
+                #exclude = ('open_ymd', 'close_ymd' )
 
 
 class LineResource(resources.ModelResource):
-    class Meta:
-        model = Line
-        import_id_fields = ('line_cd',)
+        company_cd = fields.Field(
+                attribute='company_cd',
+                widget=ForeignKeyWidget(Company, field='company_cd')
+        )
+        class Meta:
+                model = Line
+                import_id_fields = ('line_cd',)
 
 
 class ConnecteStationdResource(resources.ModelResource):
