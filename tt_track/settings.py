@@ -50,3 +50,7 @@ LOGGING = {
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SERIALIZATION_MODULES = {
+    "geojson": "django.contrib.gis.serializers.geojson", 
+ }

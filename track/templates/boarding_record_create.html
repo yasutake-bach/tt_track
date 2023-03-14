@@ -22,6 +22,7 @@
             {% endfor %}
 
             <div id="map-drawing">
+                <form action="" method="get">
                 <select id="start_pref" class="form-select" aria-label="Default select example">
 
                     <option selected>乗車開始した駅がある都道府県を選択してください</option>
@@ -35,7 +36,9 @@
                     <option value="40">40,福岡県</option><option value="41">41,佐賀県</option><option value="42">42,長崎県</option><option value="43">43,熊本県</option><option value="44">44,大分県</option><option value="45">45,宮崎県</option><option value="46">46,鹿児島県</option><option value="47">47,沖縄県</option>
                     <option value="99">99,その他</option>
                 </select>
-                <input type="button" value="確定" onclick="clickBtn_startstation()"/>
+               
+                <input  type="submit" value="確定" onclick="clickBtn_startstation()"/>
+                </form>
 
                 <script>
                     function clickBtn_startstation(){
@@ -76,7 +79,7 @@
 
             L.control.locate().addTo(map);
             const urls = [
-            '{% static "geojson/全国の駅_2.geojson" %}',
+            '#',
             ];
             urls.forEach((url) => {
             fetch(url)

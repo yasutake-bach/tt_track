@@ -10,7 +10,8 @@ from .models import Station, Line, ConnectedStation, Company
 
 
 def station_view(request):
+    print(request.GET)
     response = serialize('geojson', Station.objects.all(),
-          geometry_field='point',
-          fields=('name',))
+    geometry_field='point',
+          )
     return HttpResponse(response, content_type='application/geo+json')
