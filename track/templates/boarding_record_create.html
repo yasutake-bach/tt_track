@@ -22,28 +22,76 @@
             {% endfor %}
 
             <div id="map-drawing">
-                <form action="" method="get">
+                <!-- <form action="" method="get"> -->
                 <select id="start_pref" class="form-select" aria-label="Default select example">
 
                     <option selected>乗車開始した駅がある都道府県を選択してください</option>
                     <option value="1">1,北海道</option>
-                    <option value="2">2,青森県</option><option value="3">3,岩手県</option><option value="4">4,宮城県</option><option value="5">5,秋田県</option><option value="6">6,山形県</option><option value="7">7,福島県</option>
-                    <option value="8">8,茨城県</option><option value="9">9,栃木県</option><option value="10">10,群馬県</option><option value="11">11,埼玉県</option><option value="12">12,千葉県</option><option value="13">13,東京都</option><option value="14">14,神奈川県</option>
-                    <option value="15">15,新潟県</option><option value="16">16,富山県</option><option value="17">17,石川県</option><option value="18">18,福井県</option><option value="19">19,山梨県</option><option value="20">20,長野県</option><option value="21">21,岐阜県</option><option value="22">22,静岡県</option><option value="23">23,愛知県</option>
-                    <option value="24">24,三重県</option><option value="25">25,滋賀県</option><option value="26">26,京都府</option><option value="27">27,大阪府</option><option value="28">28,兵庫県</option><option value="29">29,奈良県</option><option value="30">30,和歌山県</option>
-                    <option value="31">31,鳥取県</option><option value="32">32,島根県</option><option value="33">33,岡山県</option><option value="34">34,広島県</option><option value="35">35,山口県</option>
-                    <option value="36">36,徳島県</option><option value="37">37,香川県</option><option value="38">38,愛媛県</option><option value="39">39,高知県</option>
-                    <option value="40">40,福岡県</option><option value="41">41,佐賀県</option><option value="42">42,長崎県</option><option value="43">43,熊本県</option><option value="44">44,大分県</option><option value="45">45,宮崎県</option><option value="46">46,鹿児島県</option><option value="47">47,沖縄県</option>
+                    <option value="2">2,青森県</option>
+                    <option value="3">3,岩手県</option>
+                    <option value="4">4,宮城県</option>
+                    <option value="5">5,秋田県</option>
+                    <option value="6">6,山形県</option>
+                    <option value="7">7,福島県</option>
+                    <option value="8">8,茨城県</option>
+                    <option value="9">9,栃木県</option>
+                    <option value="10">10,群馬県</option>
+                    <option value="11">11,埼玉県</option>
+                    <option value="12">12,千葉県</option>
+                    <option value="13">13,東京都</option>
+                    <option value="14">14,神奈川県</option>
+                    <option value="15">15,新潟県</option>
+                    <option value="16">16,富山県</option>
+                    <option value="17">17,石川県</option>
+                    <option value="18">18,福井県</option>
+                    <option value="19">19,山梨県</option>
+                    <option value="20">20,長野県</option>
+                    <option value="21">21,岐阜県</option>
+                    <option value="22">22,静岡県</option>
+                    <option value="23">23,愛知県</option>
+                    <option value="24">24,三重県</option>
+                    <option value="25">25,滋賀県</option>
+                    <option value="26">26,京都府</option>
+                    <option value="27">27,大阪府</option>
+                    <option value="28">28,兵庫県</option>
+                    <option value="29">29,奈良県</option>
+                    <option value="30">30,和歌山県</option>
+                    <option value="31">31,鳥取県</option>
+                    <option value="32">32,島根県</option>
+                    <option value="33">33,岡山県</option>
+                    <option value="34">34,広島県</option>
+                    <option value="35">35,山口県</option>
+                    <option value="36">36,徳島県</option>
+                    <option value="37">37,香川県</option>
+                    <option value="38">38,愛媛県</option>
+                    <option value="39">39,高知県</option>
+                    <option value="40">40,福岡県</option>
+                    <option value="41">41,佐賀県</option>
+                    <option value="42">42,長崎県</option>
+                    <option value="43">43,熊本県</option>
+                    <option value="44">44,大分県</option>
+                    <option value="45">45,宮崎県</option>
+                    <option value="46">46,鹿児島県</option>
+                    <option value="47">47,沖縄県</option>
                     <option value="99">99,その他</option>
                 </select>
-               
-                <input  type="submit" value="確定" onclick="clickBtn_startstation()"/>
-                </form>
+
+                <input type="submit" value="確定" onclick="clickBtn_startstation(event)" />
+                <!-- </form> -->
 
                 <script>
-                    function clickBtn_startstation(){
+                    function clickBtn_startstation(event) {
+                        event.preventDefault();
+                        console.log('pref: ', document.getElementById("start_pref").value);
                         const start_pref_num = document.getElementById("start_pref").value;
-                        var map = L.map('map').setView(pref_center[start_pref_num], 15);
+                        // const url = '{% url "station_data:station" %}' + `?pref_cd=${start_pref_num}`;
+                        const url = '{% url "station_data:station" %}' + `?add=名古屋&pref_cd=23`;
+                        fetch(url)
+                          .then((response) => response.json())
+                          .then((data) => {
+                            console.log(data);
+                          });
+                        // var map = L.map('map').setView(pref_center[start_pref_num], 15);
                     }
                 </script>
 
@@ -52,48 +100,49 @@
             <div class="container mt-3">
 
                 <div id="map"></div>
-              
+
             </div>
 
             <!-- Leaflet -->
             <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-            integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+                integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
             <!-- Leaflet.Locate -->
             <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"
-            charset="utf-8"></script>
+                charset="utf-8"></script>
             <script>
-            var map = L.map('map').setView([36, 137.59], 5);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-
-            let geojsonMarkerOptions = {
-            radius: 4,
-            fillColor: "#00ffff",
-            color: "#00f",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
-            };
-
-            L.control.locate().addTo(map);
-            const urls = [
-            '#',
-            ];
-            urls.forEach((url) => {
-            fetch(url)
-                .then((response) => response.json())
-                .then((data) => {
-                L.geoJson(data, {
-                    pointToLayer: function (feature,cordinate) {
-                    return L.circleMarker(cordinate,geojsonMarkerOptions)},
-                    onEachFeature: (feature, layer) => {
-                    layer.bindPopup(feature.properties.station_name);
-                    }
+                var map = L.map('map').setView([36, 137.59], 5);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
+
+                let geojsonMarkerOptions = {
+                    radius: 4,
+                    fillColor: "#00ffff",
+                    color: "#00f",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                };
+
+                L.control.locate().addTo(map);
+                const urls = [
+                    '#',
+                ];
+                urls.forEach((url) => {
+                    fetch(url)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            L.geoJson(data, {
+                                pointToLayer: function (feature, cordinate) {
+                                    return L.circleMarker(cordinate, geojsonMarkerOptions)
+                                },
+                                onEachFeature: (feature, layer) => {
+                                    layer.bindPopup(feature.properties.station_name);
+                                }
+                            }).addTo(map);
+                        });
                 });
-            });
             </script>
 
             <div class="mb-3">
@@ -101,93 +150,95 @@
                 {{ photo_formset.management_form }}
                 <div id="photo-formset">
                     {% for photo in photo_formset %}
-                        {{ photo.as_p }}
+                    {{ photo.as_p }}
                     {% endfor %}
                 </div>
 
                 <p id="photo_set-empty" class="d-none">
                     <label for="id_photo_set-__prefix__-photo">Photo:</label>
-                    <input type="file" name="photo_set-__prefix__-photo" accept="image/*" id="id_photo_set-__prefix__-photo">
-                    <input type="hidden" name="photo_set-__prefix__-boarding_record" id="id_photo_set-__prefix__-boarding_record">
+                    <input type="file" name="photo_set-__prefix__-photo" accept="image/*"
+                        id="id_photo_set-__prefix__-photo">
+                    <input type="hidden" name="photo_set-__prefix__-boarding_record"
+                        id="id_photo_set-__prefix__-boarding_record">
                     <input type="hidden" name="photo_set-__prefix__-id" id="id_photo_set-__prefix__-id">
                 </p>
-                
+
                 <button id="add-photo" type="button" class="btn btn-secondary">写真の追加</button>
             </div>
-            
-          
-            <div class="row" ></div>
+
+
+            <div class="row"></div>
             {{ plotting_formset.management_form }}
             {% for plotting_form in plotting_formset %}
-                <div id="plotting-area" class="col-sm-4">
-                    {{ plotting_form.as_p }}
-                </div>
+            <div id="plotting-area" class="col-sm-4">
+                {{ plotting_form.as_p }}
             </div>
-            {% endfor %}
             <button id="add" type="button" class="btn btn-secondary">座標の追加</button>
             <button class="btn btn-primary" type="submit">保存</button>
         </form>
     </div>
+    {% endfor %}
+</div>
 </div>
 {% endblock %}
 
 {% block extrajs %}
 <script>
-$(function(){
-    var totalCoordinateElement = $('input#id_plotting_set-TOTAL_FORMS');
-    var currentCoordinateCount = parseInt(totalCoordinateElement.val());
-    $('button#add').on('click', function(){
-        const newLatitudeForm = document.createElement('p');
-        let newLatitudeLabel = $('<label>', {
-            for: 'id_plotting_set-' + currentCoordinateCount + '-latitude',
-            text: 'Latitude:'
+    $(function () {
+        var totalCoordinateElement = $('input#id_plotting_set-TOTAL_FORMS');
+        var currentCoordinateCount = parseInt(totalCoordinateElement.val());
+        $('button#add').on('click', function () {
+            const newLatitudeForm = document.createElement('p');
+            let newLatitudeLabel = $('<label>', {
+                for: 'id_plotting_set-' + currentCoordinateCount + '-latitude',
+                text: 'Latitude:'
+            });
+            var latitudeElement = $('<input>', {
+                type: 'number',
+                name: 'plotting_set-' + currentCoordinateCount + '-latitude',
+                id: 'id_plotting_set-' + currentCoordinateCount + '-latitude',
+            });
+            $('div#plotting-area').append(newLatitudeForm);
+            $('div#plotting-area p:last-child').append(newLatitudeLabel, latitudeElement);
+            const newLongitudeForm = document.createElement('p');
+            let newLongitudeLabel = $('<label>', {
+                for: 'id_plotting_set-' + currentCoordinateCount + '-longitude',
+                text: 'Longitude:'
+            });
+            var longitudeElement = $('<input>', {
+                type: 'number',
+                name: 'plotting_set-' + currentCoordinateCount + '-longitude',
+                id: 'id_plotting_set-' + currentCoordinateCount + '-longitude',
+            });
+            $('div#plotting-area').append(newLongitudeForm);
+            $('div#plotting-area p:last-child').append(newLongitudeLabel, longitudeElement);
+            const newDeleteCheck = document.createElement('p');
+            let newDeleteLabel = $('<label>', {
+                for: 'id_plotting_set-' + currentCoordinateCount + '-DELETE',
+                text: '削除:'
+            });
+            let deleteElement_box = $('<input>', {
+                type: 'checkbox',
+                name: 'plotting_set-' + currentCoordinateCount + '-DELETE',
+                id: 'id_plotting_set-' + currentCoordinateCount + '-DELETE',
+            });
+            let deleteElement_b_r = $('<input>', {
+                type: 'hidden',
+                name: 'plotting_set-' + currentCoordinateCount + '-boarding_record',
+                id: 'id_plotting_set-' + currentCoordinateCount + '-boarding_record',
+            });
+            let deleteElement_id = $('<input>', {
+                type: 'hidden',
+                name: 'plotting_set-' + currentCoordinateCount + '-id',
+                id: 'id_plotting_set-' + currentCoordinateCount + '-id',
+            });
+            $('div#plotting-area').append(newDeleteCheck);
+            $('div#plotting-area p:last-child').append(newDeleteLabel, deleteElement_box, deleteElement_b_r, deleteElement_id);
+            currentCoordinateCount += 1;
+            totalCoordinateElement.attr('value', currentCoordinateCount);
+
         });
-        var latitudeElement = $('<input>', {
-            type: 'number',
-            name: 'plotting_set-' + currentCoordinateCount + '-latitude',
-            id: 'id_plotting_set-' + currentCoordinateCount + '-latitude',
-        });
-        $('div#plotting-area').append(newLatitudeForm);
-        $('div#plotting-area p:last-child').append(newLatitudeLabel, latitudeElement);
-        const newLongitudeForm = document.createElement('p');
-        let newLongitudeLabel = $('<label>', {
-            for: 'id_plotting_set-' + currentCoordinateCount + '-longitude',
-            text: 'Longitude:'
-        });
-        var longitudeElement = $('<input>', {
-            type: 'number',
-            name: 'plotting_set-' + currentCoordinateCount + '-longitude',
-            id: 'id_plotting_set-' + currentCoordinateCount +'-longitude',
-        });
-        $('div#plotting-area').append(newLongitudeForm);
-        $('div#plotting-area p:last-child').append(newLongitudeLabel, longitudeElement);
-        const newDeleteCheck = document.createElement('p');
-        let newDeleteLabel = $('<label>', {
-            for: 'id_plotting_set-' + currentCoordinateCount + '-DELETE',
-            text: '削除:'
-        });
-        let deleteElement_box = $('<input>', {
-            type: 'checkbox',
-            name: 'plotting_set-' + currentCoordinateCount + '-DELETE',
-            id: 'id_plotting_set-' + currentCoordinateCount +'-DELETE',
-        });
-        let deleteElement_b_r = $('<input>', {
-            type: 'hidden',
-            name: 'plotting_set-' + currentCoordinateCount + '-boarding_record',
-            id: 'id_plotting_set-' + currentCoordinateCount +'-boarding_record',
-        });
-        let deleteElement_id = $('<input>', {
-            type: 'hidden',
-            name: 'plotting_set-' + currentCoordinateCount + '-id',
-            id: 'id_plotting_set-' + currentCoordinateCount +'-id',
-        });
-        $('div#plotting-area').append(newDeleteCheck);
-        $('div#plotting-area p:last-child').append(newDeleteLabel, deleteElement_box, deleteElement_b_r, deleteElement_id);
-        currentCoordinateCount += 1;
-        totalCoordinateElement.attr('value', currentCoordinateCount);
-        
     });
-});
 </script>
 
 <script>
@@ -217,12 +268,12 @@ $(function(){
         const input3 = form.querySelector('#id_photo_set-__prefix__-id');
         input3.setAttribute('id', input3.getAttribute('id').replace('__prefix__', count));
         input3.setAttribute('name', input3.getAttribute('name').replace('__prefix__', count));
-        
+
         photoFormset.appendChild(form);
 
         formSetCount.value = count + 1;
 
-        if(formSetCount.value >= photoMax) {
+        if (formSetCount.value >= photoMax) {
             addPhotoButton.remove();
         }
     });
